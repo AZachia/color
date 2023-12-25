@@ -170,7 +170,6 @@ def set_bg_color(color):
     if os.name == 'nt':
         os.system(f'color {color}')
     else:
-        #os.system(f'setterm -background {color} -foreground white -store')
         os.system('setterm -term linux -back $'+color+' -fore white -clear')
 
 
