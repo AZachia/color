@@ -1,2 +1,2 @@
 # color
-color tools for terminal written n python
+color tools for terminal written in python
