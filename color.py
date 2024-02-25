@@ -176,28 +176,29 @@ def set_bg_color(color: str):
         os.system('setterm -term linux -back $'+color+' -fore white -clear')
 
 
-def tinput(text='', h=30):
+def tinput(text: str = '', w: int = 30) -> str:
     """ask the user in a boxed input"""
-    if len(text) > h:
-        h = len(text)+5
-    value = input(f"""╔{"═"*h}╗\n║{" "*h}║\n╚{"═"*h}╝{prev_line}║ {text}""")
+    if len(text) > w:
+        w = len(text)+5
+    value = input(f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{prev_line}║ {text}""")
     print()
     return value
     
 
     
-def bg_color(hex: str):
+def hex_bg_color(hex: str):
     """set this hexadecimal color as backgound"""
     print(f"\033]11;#{hex.replace('#', '')}\007")
 
     
-def bg_color_rgb(r, g, b):
-    bg_color(rgb_to_hex(r, g, b))
+def rgb_bg_color(r, g, b):
+    hex_bg_color(rgb_to_hex(r, g, b))
 
 def get_rgb_print(r, g, b, background=False):
     return '\033[{};2;{};{};{}m'.format(48 if background else 38, r, g, b)
 
 def rgbprint(r, g, b, *args, background=False, **kwargs):
+    """print the text with the rgb color"""
     cprint(get_rgb_print(r, g, b, background), *args, **kwargs)
 
 def hexprint(hex, *args, background=False, **kwargs):
