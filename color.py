@@ -201,8 +201,8 @@ def rgbprint(r, g, b, *args, background=False, **kwargs):
     cprint(get_rgb_print(r, g, b, background), *args, **kwargs)
 
 def hexprint(hex, *args, background=False, **kwargs):
-    rgb = hex_to_rgb(hex)
-    rgbprint(rgb[0], rgb[1], rgb[2], *args, background=background, **kwargs)
+    """print the text with the exadecimal color"""
+    rgbprint(*hex_to_rgb(hex), *args, background=background, **kwargs)
 
 
 def colorless(text: str):
