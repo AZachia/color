@@ -183,7 +183,6 @@ def tinput(text: str = '', w: int = 30) -> str:
     value = input(f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{prev_line}║ {text}""")
     print()
     return value
-    
 
     
 def hex_bg_color(hex: str):
@@ -193,6 +192,10 @@ def hex_bg_color(hex: str):
     
 def rgb_bg_color(r, g, b):
     hex_bg_color(rgb_to_hex(r, g, b))
+
+def bg_color(*args):
+    pass
+
 
 def get_rgb_print(r, g, b, background=False):
     return '\033[{};2;{};{};{}m'.format(48 if background else 38, r, g, b)
