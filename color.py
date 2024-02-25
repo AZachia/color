@@ -187,14 +187,13 @@ def tinput(text: str = '', w: int = 30) -> str:
     
 def hex_bg_color(hex: str):
     """set this hexadecimal color as backgound"""
-    print(f"\033]11;#{hex.replace('#', '')}\007")
+    print(f"\033]11;#{hex.replace('#', '')}\007", end="\r")
 
     
 def rgb_bg_color(r, g, b):
     hex_bg_color(rgb_to_hex(r, g, b))
 
 def bg_color(*args):
-    print(len(args))
     if len(args) == 3:
         rgb_bg_color(*args)
     elif type(args[0]) in [list, tuple]:
@@ -221,3 +220,12 @@ def hexprint(hex, *args, background=False, **kwargs):
 def colorless(text: str):
     pattern = re.compile("(\\x1b\[((\d;)*\d)*[a-zA-Z]{1})+")
     return pattern.sub("", text)
+
+
+if __name__ == "__main__":
+    clear()
+    bg_color(*[50]*3)
+    cprint(underline, "Welcome in color!")
+    name = tinput(f'What is your name ?{RED}')
+    cprint("Hello", YELLOW, name, RESET, " !")
+    
