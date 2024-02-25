@@ -208,14 +208,3 @@ def hexprint(hex, *args, background=False, **kwargs):
 def colorless(text: str):
     pattern = re.compile("(\\x1b\[((\d;)*\d)*[a-zA-Z]{1})+")
     return pattern.sub("", text)
-
-
-if __name__ == '__main__':
-
-    print(load_cursor)
-
-    tinput("Nom:")
-
-    cprint(cursor_pos(0, 0), "sdfhsd")
-    print()
-
