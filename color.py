@@ -93,7 +93,6 @@ next_line   = '\x1b[E'
 prev_line   = '\x1b[F'
 goto_x      = '\x1b[G'
 erase       = '\x1b[J'
-erase_data  = erase
 erase_line  = '\x1b[K'
 clear_line = "\033[2K"
 scroll_up   = '\x1b[S'
@@ -118,9 +117,8 @@ restore_cursor_pos = "\033[u"
 
 
 def clear():
+    """clear the terminal"""
     os.system("cls" if os.name == "nt" else "clear")
-
-clear() if os.name == "nt" else None
 
 
 class Color:
@@ -151,22 +149,27 @@ def cprint(*args, **kwargs):
 
 
 
-def hex_to_rgb(hex:str):
-  rgb = []
-  hex = hex.replace('#', '')
-  for i in (0, 2, 4):
-    decimal = int(hex[i:i+2], 16)
-    rgb.append(decimal)
-  return tuple(rgb)
+def hex_to_rgb(hex: str) -> tuple:
+    """convert hexadecimal color ro hex"""
+    rgb = []
+    hex = hex.replace('#', '')
+    for i in (0, 2, 4):
+        decimal = int(hex[i:i+2], 16)
+        rgb.append(decimal)
+    return tuple(rgb)
 
 
-def rgb_to_hex(r, g, b):
+def rgb_to_hex(r, g, b) -> str:
+    """convert rgb color to hex"""
     return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
 
 
 
-def set_bg_color(color):
+def set_bg_color(color: str):
+    """set background color of the terminal using the os default functions
+    For windows, use the Win_... colors.
+    """
     if os.name == 'nt':
         os.system(f'color {color}')
     else:
@@ -174,6 +177,7 @@ def set_bg_color(color):
 
 
 def tinput(text='', h=30):
+    """ask the user in a boxed input"""
     if len(text) > h:
         h = len(text)+5
     value = input(f"""╔{"═"*h}╗\n║{" "*h}║\n╚{"═"*h}╝{prev_line}║ {text}""")
@@ -182,9 +186,9 @@ def tinput(text='', h=30):
     
 
     
-def bg_color(hex:str):
-    hex = hex.replace('#', '')
-    print(f"\033]11;#{hex}\007")
+def bg_color(hex: str):
+    """set this hexadecimal color as backgound"""
+    print(f"\033]11;#{hex.replace('#', '')}\007")
 
     
 def bg_color_rgb(r, g, b):
