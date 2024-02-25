@@ -150,7 +150,7 @@ def cprint(*args, **kwargs):
 
 
 def hex_to_rgb(hex: str) -> tuple:
-    """convert hexadecimal color ro hex"""
+    """convert hexadecimal color to rgb"""
     rgb = []
     hex = hex.replace('#', '')
     for i in (0, 2, 4):
@@ -227,5 +227,5 @@ if __name__ == "__main__":
     bg_color(*[50]*3)
     cprint(underline, "Welcome in color!")
     name = tinput(f'What is your name ?{RED}')
-    cprint("Hello", YELLOW, name, RESET, " !")
+    cprint("Hello", YELLOW, name, RESET, "!")
     
