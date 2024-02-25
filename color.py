@@ -194,7 +194,16 @@ def rgb_bg_color(r, g, b):
     hex_bg_color(rgb_to_hex(r, g, b))
 
 def bg_color(*args):
-    pass
+    print(len(args))
+    if len(args) == 3:
+        rgb_bg_color(*args)
+    elif type(args[0]) in [list, tuple]:
+        rgb_bg_color(args)
+    else:
+        hex_bg_color(args[0])
+        
+        
+        
 
 
 def get_rgb_print(r, g, b, background=False):
