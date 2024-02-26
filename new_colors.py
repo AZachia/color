@@ -48,12 +48,12 @@ pattern = re.compile(r"\x1b\[(\d*;)*\d*[a-zA-Z]{1}\ ?")
 
 def is_color(string: str):
     """
-    Check if a string is a color.
+    Check if a string has a color.
     """
     return bool(re.search(pattern, string))
 
 
-def colorless(*args):
+def colorless(text: str):
     """
     Remove all colors.
     """
