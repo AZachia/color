@@ -55,11 +55,8 @@ def is_color(string: str):
 
 def colorless(*args):
     """
-    Remove all colors and additionnal spaces.
+    Remove all colors.
     """
-    text = ""
-    for arg in args:
-        text+=f"{arg}"
     return pattern.sub("", text)
 
 
