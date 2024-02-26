@@ -120,6 +120,10 @@ def clear():
     """clear the terminal"""
     os.system("cls" if os.name == "nt" else "clear")
 
+def terminal_size():
+    """get the terminal size: colums, lines"""
+    return int(os.get_terminal_size().columns), int(os.get_terminal_size().lines)
+
 
 class Color:
     def __init__(self, colors:list=[], end_colors:list=[]) -> None:
@@ -203,8 +207,6 @@ def bg_color(*args):
         
         
         
-
-
 def get_rgb_print(r, g, b, background=False):
     return '\033[{};2;{};{};{}m'.format(48 if background else 38, r, g, b)
 
