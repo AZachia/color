@@ -40,8 +40,8 @@ cprint(color.get_rgb_print(200, 120, 0), "Orange text")
 cprint(color.get_hex_print("#0000FF"), "Blue text")
 
 # Background
-cprint(color.get_rgb_print(200, 120, 0, True), "Orange text")
-cprint(color.get_hex_print("#0000FF", True), "Blue text")
+cprint(color.get_rgb_print(200, 120, 0, True), "Orange background")
+cprint(color.get_hex_print("#0000FF", True), "Blue background")
 ```
 
 
