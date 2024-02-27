@@ -88,6 +88,7 @@ def clear() -> None:
     """
     os.system("cls" if os.name == "nt" else "clear")
 
+
 def terminal_size() -> tuple[int, int]:
     """
     get the terminal size: colums, lines
@@ -138,6 +139,7 @@ def cprint(*args, **kwargs) -> str:
 def custom(r: int, g: int, b: int, bg: bool = False) -> str:
     return "\x1b[{};2;{};{};{}m".format(48 if bg else 38, r, g, b)
 
+
 def hex_to_rgb(hex: str) -> tuple:
     """
     convert hexadecimal color to rgb
@@ -157,8 +159,6 @@ def rgb_to_hex(r, g, b) -> str:
     return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
 
-
-
 def set_bg_color(color: str) -> None:
     """
     set background color of the terminal using the os default functions
@@ -176,20 +176,22 @@ def tinput(text: str = '', w: int = 30) -> str:
     """
     if len(text) > w:
         w = len(text)+5
-    value = input(f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{cursor_lineup}║ {text}""")
+    value = input(
+        f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{cursor_lineup}║ {text}""")
     print()
     return value
 
-    
+
 def hex_bg_color(hex: str) -> None:
     """
     set this hexadecimal color as backgound
     """
     print(f"\033]11;#{hex.replace('#', '')}\007", end="\r")
 
-    
+
 def rgb_bg_color(r, g, b) -> None:
     hex_bg_color(rgb_to_hex(r, g, b))
+
 
 def bg_color(*args) -> None:
     if len(args) == 3:
@@ -198,11 +200,15 @@ def bg_color(*args) -> None:
         rgb_bg_color(args)
     else:
         hex_bg_color(args[0])
-        
-        
-        
+
+
 def get_rgb_print(r, g, b, background=False) -> str:
     return '\033[{};2;{};{};{}m'.format(48 if background else 38, r, g, b)
+
+
+def get_hex_print(hex: str, background=False) -> str:
+    return get_rgb_print(*hex_to_rgb(hex), background=background)
+
 
 def rgbprint(r, g, b, *args, background=False, **kwargs) -> None:
     """
@@ -210,18 +216,55 @@ def rgbprint(r, g, b, *args, background=False, **kwargs) -> None:
     """
     cprint(get_rgb_print(r, g, b, background), *args, **kwargs)
 
+
 def hexprint(hex, *args, background=False, **kwargs) -> None:
     """
     print the text with the exadecimal color
     """
     rgbprint(*hex_to_rgb(hex), *args, background=background, **kwargs)
+    
 
+def center(text: str, char: str = ' ') -> str:
+    lenth = len(colorless(text))
+    terminal_width = terminal_size()[0]
+    
+    left = (terminal_width // 2) - (lenth // 2)
+    
+    return " " * left + text
+    
 
 
 if __name__ == "__main__":
+    clear()
+    cprint(center(red + underline + bold + "Hello !"))
+    cprint(bold, "Welcome in the color library!")
+    cprint("Here, you can add more fun and color in your terminal >_ !\n")
+    
     # You can extract a colorless version of the printed text
-    print("Colored:",end="")
+    print("Colored:", end="")
     colorless_print = cprint("\t", bold, black, "You", red_bg, "Tube")
     print(f"Uncolored:{colorless_print}")
-    print("\nCustom color:")
-    cprint(custom(200, 120, 0), "Orange")
+    
+    cprint(bold, "\nRGB and Hexadecimal color support: ")
+    print("Custom color: ", end="")
+    cprint(get_rgb_print(200, 120, 0), "Orange (200, 120, 0)")
+    cprint(" " * 15 + underline + "or", end="")
+    print("\nCustom color: ", end="")
+    cprint(get_hex_print("#0000ff"), "Blue (#0000FF)")
+    
+    # easy way to create beautiful things
+    cprint(bold, "\nColor gradient: ")
+    i = 0
+    for _ in range(50):
+        cprint(get_rgb_print(255 - i, 0, 0, True), " ",end = "")
+        i += 5
+    print()
+    i = 0
+    for _ in range(50):
+        cprint(get_rgb_print(0, 255 - i, 0, True), " ", end="")
+        i += 5
+    print()
+    i = 0
+    for _ in range(50):
+        cprint(get_rgb_print(0, 0, 255 - i, True), " ", end="")
+        i += 5
