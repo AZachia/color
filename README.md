@@ -10,6 +10,7 @@ color tools for terminal written in python
 Copy the [color.py](https://github.com/AZachia/color/blob/main/color.py) file in your directory.
 
 ## Documentation
+### Displaying colors
 
  - import the library:
 ```python
@@ -43,6 +44,19 @@ cprint(color.get_hex_print("#0000FF"), "Blue text")
 cprint(color.get_rgb_print(200, 120, 0, True), "Orange background")
 cprint(color.get_hex_print("#0000FF", True), "Blue background")
 ```
+
+### Cursor movement
+
+with this library, you can control the cursor easily.
+
+ - Show and hide the cursor:
+  ```python
+print(color.hide_cursor)
+print("You don't see the cursor")
+print(color.show_cursor)
+print("You see it now !")
+```
+- Moving the cursor:
 
 
 
