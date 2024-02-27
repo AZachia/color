@@ -271,5 +271,4 @@ if __name__ == "__main__":
     cprint(f"you said: {green}{you}")
     
     cprint(bold, "\n • Get the terminal size:")
-    cprint(
-        f"your terminal size is {red}{terminal_size()[0]}{reset}:{red}{terminal_size()[1]} ")
+    cprint(f"your terminal size is {red}{terminal_size()[0]}{reset}:{red}{terminal_size()[1]} ")
