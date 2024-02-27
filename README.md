@@ -57,6 +57,14 @@ print(color.show_cursor)
 print("You see it now !")
 ```
 - Moving the cursor:
+ ```python
+print("hello ", end="")
+print(color.next_line, end="")
+print("I am down")
+print(color.prev_line*2, end="")
+print(color.forward*6 + "world")
+print(color.next_line, end="")
+```
 
 
 
