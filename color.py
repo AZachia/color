@@ -1,160 +1,147 @@
-import os, re
+import re
+import os
 
-#ForeGround
-BLACK           = '\033[30m'
-RED             = '\033[31m'
-GREEN           = '\033[32m'
-YELLOW          = '\033[33m'
-BLUE            = '\033[34m'
-MAGENTA         = '\033[35m'
-CYAN            = '\033[36m'
-WHITE           = '\033[37m'
-RESET           = '\033[39m'
-LIGHTBLACK   = '\033[90'
-LIGHTRED     = '\033[91m'
-LIGHTGREEN   = '\033[92m'
-LIGHTYELLOW  = '\033[93m'
-LIGHTBLUE    = '\033[94m'
-LIGHTMAGENTA = '\033[95m'
-LIGHTCYAN    = '\033[96m'
-LIGHTWHITE   = '\033[97m'
+reset = "\x1b[0m"
+
+# Style add                 Style remove
+underline = '\x1b[4m';      underline_remove = '\x1b[24m'
+bold = "\x1b[1m";           bold_remove = "\x1b[21m"
+dim = "\x1b[2";             dim_remove = "\x1b[22"
+blink = "\x1b[5m";          blink_remove = "\x1b[25m"
+reverse = "\x1b[7m";        reverse_remove = "\x1b[27m"
+hide = "\x1b[8m";           hide_remove = "\x1b[28m"
+
+# Text color:               Background Color
+black = "\x1b[30m";         black_bg = "\x1b[40m"
+black_bright = "\x1b[90m";  black_bg = "\x1b[100m"
+red = "\x1b[31m";           red_bg = "\x1b[41m"
+red_bright = "\x1b[91m";    red_bright_bg = "\x1b[101m"
+green = "\x1b[32m";         green_bg = "\x1b[42m"
+green_bright = "\x1b[92m";  green_bright_bg = "\x1b[102m"
+yellow = "\x1b[33m";        yellow_bg = "\x1b[43m"
+yellow_bright = "\x1b[93m"; yellow_bright_bg = "\x1b[103m"
+blue = "\x1b[34m";          blue_bg = "\x1b[44m"
+blue_bright = "\x1b[94m";   blue_bright_bg = "\x1b[104m"
+magenta = "\x1b[35m";       magenta_bg = "\x1b[45m"
+magenta_bright = "\x1b[95m";magenta_bright_bg = "\x1b[105m"
+cyan = "\x1b[36m";          cyan_bg = "\x1b[46m"
+cyan_bright = "\x1b[96m";   cyan_bright_bg = "\x1b[106m"
+white = "\x1b[37m";         white_bg = "\x1b[47m"
+white_bright = "\x1b[97m";  white_bright_bg = "\x1b[107m"
+default = "\x1b[109m"
 
 
-#BackGround
-BACK_BLACK           = '\033[40m'
-BACK_RED             = '\033[41m'
-BACK_GREEN           = '\033[42m'
-BACK_YELLOW          = '\033[43m'
-BACK_BLUE            = '\033[44m'
-BACK_MAGENTA         = '\033[45m'
-BACK_CYAN            = '\033[46m'
-BACK_WHITE           = '\033[47m'
-BACK_RESET           = '\033[49m'
-BACK_WHITE2          = '\033[7m'
-BACK_LIGHTBLACK   = '\033[100m'
-BACK_LIGHTRED     = '\033[101m'
-BACK_LIGHTGREEN   = '\033[102m'
-BACK_LIGHTYELLOW  = '\033[103m'
-BACK_LIGHTBLUE    = '\033[104m'
-BACK_LIGHTMAGENTA = '\033[105m'
-BACK_LIGHTCYAN    = '\033[106m'
-BACK_LIGHTWHITE   = '\033[107m'
-
-#Style
-BRIGHT    = '\033[1m'
-DIM       = '\033[2m'
-NORMAL    = '\033[22m'
-RESET_ALL = '\033[0m'
-UNDERLINE = '\033[4m'
-CROSSED = '\033[9m'
-bold_underline = "\033[21m"
-box_1 = "\033[51m"
-box_2 = "\033[52m"
-underline = '\033[4m'
-underline_remove = '\033[24m'
-bold = "\033[1m"
-bold_remove = "\033[21m"
-dim = "\033[2"
-dim_remove = "\033[22"
-blink = "\033[5m"
-blink_remove = "\033[5m"
-reverse = "\033[7m"
-reverse_remvoe = "\033[27m"
-hide = "\033[8m"
-hide_remove = "\033[28m"
-
-#Windows Terminal
-Win_Black = "0"
-Win_Blue = "1"
-Win_Green = "2"
-Win_BlueGray = "3"
-Win_Red = "4"
-Win_Purlple = "5"
-Win_Yellow = "6"
-Win_White = '7'
-Win_Grey = "8"
-Win_LightBlue = '9'
-Win_LightGreen = "A"
-Win_Cyan = "B"
-Win_LightRed = "C"
+# Windows Terminal
+Win_Black       = "0"
+Win_Blue        = "1"
+Win_Green       = "2"
+Win_BlueGray    = "3"
+Win_Red         = "4"
+Win_Purlple     = "5"
+Win_Yellow      = "6"
+Win_White       = '7'
+Win_Grey        = "8"
+Win_LightBlue   = '9'
+Win_LightGreen  = "A"
+Win_Cyan        = "B"
+Win_LightRed    = "C"
 Win_LightPurple = "D"
 Win_LightYellow = 'E'
-Win_LightWhite = 'F'
-Win_bg = "0"
-
+Win_LightWhite  = 'F'
+Win_bg          = "0"
 
 
 # Cursor movement
-up          = '\x1b[A'
-down        = '\x1b[B'
-forward     = '\x1b[C'
-back        = '\x1b[D'
-next_line   = '\x1b[E'
-prev_line   = '\x1b[F'
-goto_x      = '\x1b[G'
-erase       = '\x1b[J'
-erase_line  = '\x1b[K'
-clear_line = "\033[2K"
-scroll_up   = '\x1b[S'
-scroll_down = '\x1b[T'
-save_cursor = '\x1b[s'
-load_cursor = '\x1b[u'
-show        = '\x1b[?25h'
-hide        = '\x1b[?25l'
-cursor_pos = lambda l, c: f"\033[{l};{c}H"
-cursor_pos2 = lambda l, c: f"\033[{l};{c}f"
-cursor_pos3 = lambda l, c: cursor_pos2(l, 0)+(c*forward)
-cursor_lineup = lambda n: f"\033[{n}A"
-cursor_linedown = lambda n: f"\033[{n}B"
-cursor_column_right = lambda n: f"\033[{n}C"
-cursor_column_left = lambda n: f"\033[{n}D"
-clear_x0_y0 = "\033[2J"
-clear_endline = "\033[K"
-save_cursor_pos = "\033[s"
-restore_cursor_pos = "\033[u"
+up                  = '\x1b[A'
+down                = '\x1b[B'
+forward             = '\x1b[C'
+back                = '\x1b[D'
+next_line           = '\x1b[E'
+prev_line           = '\x1b[F'
+erase               = '\x1b[J'
+erase_line          = '\x1b[K'
+clear_line          = "\033[2K"
+scroll_up           = '\x1b[S'
+scroll_down         = '\x1b[T'
+save_cursor         = '\x1b[s'
+load_cursor         = '\x1b[u'
+show_cursor         = '\x1b[?25h'
+hide_cursor         = '\x1b[?25l'
+cursor_pos          = lambda l, c: f"\x1b[{l};{c}H"
+cursor_pos2         = lambda l, c: f"\x1b[{l};{c}f"
+cursor_pos3         = lambda l, c: cursor_pos2(l, 0)+(c*forward)
+cursor_lineup       = lambda n: f"\x1b[{n}A"
+cursor_linedown     = lambda n: f"\x1b[{n}B"
+cursor_column_right = lambda n: f"\x1b[{n}C"
+cursor_column_left  = lambda n: f"\x1b[{n}D"
+clear_x0_y0         = "\x1b[2J"
+clear_endline       = "\x1b[K"
+save_cursor_pos     = "\x1b[s"
+restore_cursor_pos  = "\x1b[u"
+flush               = "\x1b[F"
 
+pattern = re.compile(r"\x1b\[(\d*;)*\d*[a-zA-Z]{1}\ ?")
 
-
-
-def clear():
-    """clear the terminal"""
+def clear() -> None:
+    """
+    clear the terminal
+    """
     os.system("cls" if os.name == "nt" else "clear")
 
-def terminal_size():
-    """get the terminal size: colums, lines"""
+def terminal_size() -> tuple[int, int]:
+    """
+    get the terminal size: colums, lines
+    """
     return int(os.get_terminal_size().columns), int(os.get_terminal_size().lines)
 
 
-class Color:
-    def __init__(self, colors:list=[], end_colors:list=[]) -> None:
-        self.colors = colors
-        self.end_colors = colors
-
-    def print(self, *args, **kargs):
-        print("".join(self.colors), *args, ''.join(self.end_colors), **kargs)
+def is_color(string: str) -> bool:
+    """
+    Check if a string has a color.
+    """
+    return bool(re.search(pattern, string))
 
 
-def cprint(*args, **kwargs):
+def colorless(text: str) -> str:
+    """
+    Remove all colors.
+    """
+    return pattern.sub("", text)
+
+
+def cprint(*args, **kwargs) -> str:
+    """
+    Prints normally but accept colors:
+    - Doesn't add wierd spaces when printing consecutive colors separated by a comma
+    - Resets the color at the end
+    - Returns a colorless version of the printed text
+    """
     end = "\n"
     msg = ""
-    for arg in args:
-        try:
-            if str(arg).startswith("\033[") and str(arg).endswith("m"):
-                msg += f"{arg}"
-            else:
-                msg += f" {arg}"
-        except ValueError:
-            raise ValueError(f"Cannot convert {arg} into str")
-    if kwargs.get('end'):
+    for i in range(len(args)):
+        word = str(args[i])
+        nxt = str(args[i+1]) if i+1 < len(args) else None
+        if is_color(word) or is_color(str(nxt)):
+            msg += word
+        elif nxt:
+            msg += word+" "
+        else:
+            msg += word
+    if kwargs.get('end') is not None:
         end = kwargs.get('end')
         kwargs.pop('end')
-    print(msg, **kwargs, end=f"{RESET_ALL}{end}{RESET_ALL}")
+
+    print(msg, **kwargs, end=f"{reset}{end}{reset}")
+    return colorless(msg)
 
 
-
+def custom(r: int, g: int, b: int, bg: bool = False) -> str:
+    return "\x1b[{};2;{};{};{}m".format(48 if bg else 38, r, g, b)
 
 def hex_to_rgb(hex: str) -> tuple:
-    """convert hexadecimal color to rgb"""
+    """
+    convert hexadecimal color to rgb
+    """
     rgb = []
     hex = hex.replace('#', '')
     for i in (0, 2, 4):
@@ -164,14 +151,17 @@ def hex_to_rgb(hex: str) -> tuple:
 
 
 def rgb_to_hex(r, g, b) -> str:
-    """convert rgb color to hex"""
+    """
+    convert rgb color to hex
+    """
     return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 
 
 
 
-def set_bg_color(color: str):
-    """set background color of the terminal using the os default functions
+def set_bg_color(color: str) -> None:
+    """
+    set background color of the terminal using the os default functions
     For windows, use the Win_... colors.
     """
     if os.name == 'nt':
@@ -181,23 +171,27 @@ def set_bg_color(color: str):
 
 
 def tinput(text: str = '', w: int = 30) -> str:
-    """ask the user in a boxed input"""
+    """
+    ask the user in a boxed input
+    """
     if len(text) > w:
         w = len(text)+5
-    value = input(f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{prev_line}║ {text}""")
+    value = input(f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{cursor_lineup}║ {text}""")
     print()
     return value
 
     
-def hex_bg_color(hex: str):
-    """set this hexadecimal color as backgound"""
+def hex_bg_color(hex: str) -> None:
+    """
+    set this hexadecimal color as backgound
+    """
     print(f"\033]11;#{hex.replace('#', '')}\007", end="\r")
 
     
-def rgb_bg_color(r, g, b):
+def rgb_bg_color(r, g, b) -> None:
     hex_bg_color(rgb_to_hex(r, g, b))
 
-def bg_color(*args):
+def bg_color(*args) -> None:
     if len(args) == 3:
         rgb_bg_color(*args)
     elif type(args[0]) in [list, tuple]:
@@ -207,27 +201,27 @@ def bg_color(*args):
         
         
         
-def get_rgb_print(r, g, b, background=False):
+def get_rgb_print(r, g, b, background=False) -> str:
     return '\033[{};2;{};{};{}m'.format(48 if background else 38, r, g, b)
 
-def rgbprint(r, g, b, *args, background=False, **kwargs):
-    """print the text with the rgb color"""
+def rgbprint(r, g, b, *args, background=False, **kwargs) -> None:
+    """
+    print the text with the rgb color
+    """
     cprint(get_rgb_print(r, g, b, background), *args, **kwargs)
 
-def hexprint(hex, *args, background=False, **kwargs):
-    """print the text with the exadecimal color"""
+def hexprint(hex, *args, background=False, **kwargs) -> None:
+    """
+    print the text with the exadecimal color
+    """
     rgbprint(*hex_to_rgb(hex), *args, background=background, **kwargs)
 
 
-def colorless(text: str):
-    pattern = re.compile("(\\x1b\[((\d;)*\d)*[a-zA-Z]{1})+")
-    return pattern.sub("", text)
-
 
 if __name__ == "__main__":
-    clear()
-    bg_color(*[50]*3)
-    cprint(underline, "Welcome in color!")
-    name = tinput(f'What is your name ?{RED}')
-    cprint("Hello", YELLOW, name, RESET, "!")
-    
+    # You can extract a colorless version of the printed text
+    print("Colored:",end="")
+    colorless_print = cprint("\t", bold, black, "You", red_bg, "Tube")
+    print(f"Uncolored:{colorless_print}")
+    print("\nCustom color:")
+    cprint(custom(200, 120, 0), "Orange")
