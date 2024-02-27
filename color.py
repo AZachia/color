@@ -253,18 +253,12 @@ if __name__ == "__main__":
     cprint(get_hex_print("#0000ff"), "Blue (#0000FF)")
     
     # easy way to create beautiful things
-    cprint(bold, "\nColor gradient: ")
-    i = 0
-    for _ in range(50):
-        cprint(get_rgb_print(255 - i, 0, 0, True), " ",end = "")
-        i += 5
-    print()
-    i = 0
-    for _ in range(50):
-        cprint(get_rgb_print(0, 255 - i, 0, True), " ", end="")
-        i += 5
-    print()
-    i = 0
-    for _ in range(50):
-        cprint(get_rgb_print(0, 0, 255 - i, True), " ", end="")
-        i += 5
+    cprint(bold, "\nEasy to use, ex: Color gradient: ")
+    for c in range(3):
+        i = 0
+        for _ in range(50):
+            rgb = [0,0,0]
+            rgb[c] = 255 - i
+            cprint(get_rgb_print(*rgb, True), " ",end = "")
+            i += 5
+        print()
