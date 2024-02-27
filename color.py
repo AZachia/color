@@ -237,23 +237,26 @@ def center(text: str, char: str = ' ') -> str:
 if __name__ == "__main__":
     clear()
     cprint(center(red + underline + bold + "Hello !"))
-    cprint(bold, "Welcome in the color library!")
-    cprint("Here, you can add more fun and color in your terminal >_ !\n")
+    cprint(bold, f"\nWelcome in the color library! ({get_rgb_print(0,0,255) + underline}https://github.com/AZachia/color{reset})")
+    cprint(f"Here, you can add more fun and color in your terminal {get_rgb_print(*[50]*3, True)} >_ {reset} !\n")
     
+    cprint(bold, underline, "Features:")
+    
+    cprint(bold, "\n • You can extract a colorless version of the printed text")
     # You can extract a colorless version of the printed text
     print("Colored:", end="")
     colorless_print = cprint("\t", bold, black, "You", red_bg, "Tube")
     print(f"Uncolored:{colorless_print}")
     
-    cprint(bold, "\nRGB and Hexadecimal color support: ")
-    print("Custom color: ", end="")
+    cprint(bold, "\n • RGB and Hexadecimal color support: ")
+    print("RGB color: ", end="")
     cprint(get_rgb_print(200, 120, 0), "Orange (200, 120, 0)")
     cprint(" " * 15 + underline + "or", end="")
-    print("\nCustom color: ", end="")
+    print("\nHEX color: ", end="")
     cprint(get_hex_print("#0000ff"), "Blue (#0000FF)")
     
     # easy way to create beautiful things
-    cprint(bold, "\nEasy to use, ex: Color gradient: ")
+    cprint(bold, "\n • Easy to use, ex: Color gradient: ")
     for c in range(3):
         i = 0
         for _ in range(50):
@@ -262,3 +265,11 @@ if __name__ == "__main__":
             cprint(get_rgb_print(*rgb, True), " ",end = "")
             i += 5
         print()
+        
+    cprint(bold, "\n • Get nice user inputs:")
+    you = tinput("What do you think about it ? ", 30, True)
+    cprint(f"you said: {green}{you}")
+    
+    cprint(bold, "\n • Get the terminal size:")
+    cprint(
+        f"your terminal size is {red}{terminal_size()[0]}{reset}:{red}{terminal_size()[1]} ")
