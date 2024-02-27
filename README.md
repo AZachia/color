@@ -19,9 +19,6 @@ from color import cprint
 
  - to display colored text:
 ```python
-import color
-from color import cprint
-
 cprint(color.red + "red text")
 # or
 cprint(color.blue, "blue text")
@@ -32,8 +29,19 @@ cprint(f"{color.yellow}yellow text")
  - clear the terminal:
 
  ```python
-import color
 color.clear()
+```
+
+ - Print Hexadecimal or RGB colors:
+
+```python
+# Foreground
+cprint(color.get_rgb_print(200, 120, 0), "Orange text")
+cprint(color.get_hex_print("#0000FF"), "Blue text")
+
+# Background
+cprint(color.get_rgb_print(200, 120, 0, True), "Orange text")
+cprint(color.get_hex_print("#0000FF", True), "Blue text")
 ```
 
 
