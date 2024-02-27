@@ -5,6 +5,30 @@ color tools for terminal written in python
 
 ![image](screenshot.PNG)
 
+## Installation
+
+Copy the [color.py](https://github.com/AZachia/color/blob/main/color.py) file in your directory.
+
+## Documentation
+
+import the library:
+```python
+import color
+from color import cprint
+```
+
+to display colored text:
+```python
+import color
+from color import cprint
+
+cprint(color.red + "red text")
+# or
+cprint(color.blue, "blue text")
+# or
+cprint(f"{color.yellow}yellow text")
+```
+
 
 Written by [Galky](https://github.com/Gvlky) & [me](https://github.com/AZachia)
 
