@@ -20,12 +20,21 @@ from color import cprint
  - to display colored text:
 ```python
 import color
+from color import cprint
 
-color.clear()
+cprint(color.red + "red text")
+# or
+cprint(color.blue, "blue text")
+# or
+cprint(f"{color.yellow}yellow text")
 ```
 
  - clear the terminal:
 
+ ```python
+import color
+color.clear()
+```
 
 
 
