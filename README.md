@@ -11,23 +11,22 @@ Copy the [color.py](https://github.com/AZachia/color/blob/main/color.py) file in
 
 ## Documentation
 
-import the library:
+ - import the library:
 ```python
 import color
 from color import cprint
 ```
 
-to display colored text:
+ - to display colored text:
 ```python
 import color
-from color import cprint
 
-cprint(color.red + "red text")
-# or
-cprint(color.blue, "blue text")
-# or
-cprint(f"{color.yellow}yellow text")
+color.clear()
 ```
+
+ - clear the terminal:
+
+
 
 
 Written by [Galky](https://github.com/Gvlky) & [me](https://github.com/AZachia)
