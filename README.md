@@ -66,6 +66,20 @@ print(color.forward*6 + "world")
 print(color.next_line, end="")
 ```
 
+### Miscellaneous
+
+ - dispay a table: 
+ ```python
+ color.table([["You can also", "Print tables"], ["in a few steps", "and with a nice result"]], samesize=True, align="center", padding=2)
+ ```
+result: 
+```
+╭────────────────────────┬────────────────────────╮
+│      You can also      │      Print tables      │
+├────────────────────────┼────────────────────────┤
+│     in a few steps     │ and with a nice result │
+╰────────────────────────┴────────────────────────╯
+```
 
 
 Written by [Galky](https://github.com/Gvlky) & [me](https://github.com/AZachia)
