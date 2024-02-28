@@ -82,6 +82,28 @@ flush               = "\x1b[F"
 
 pattern = re.compile(r"\x1b\[(\d*;)*\d*[a-zA-Z]{1}\ ?")
 
+
+
+decorations = {
+    "double": {"horizontal": "═", "vertical": "║", "top_left": "╔", "top_right": "╗", "bottom_right": "╝", "bottom_left": "╚", "left": "╠", "top": "╦", "right": "╣", "bottom": "╩", "center": "╬"},
+    "rounded": {"horizontal": "─", "vertical": "│", "top_left": "╭", "top_right": "╮", "bottom_right": "╯", "bottom_left": "╰", "left": "├", "top": "┬", "right": "┤", "bottom": "┴", "center": "┼"},
+    "light": {"horizontal": "─", "vertical": "│", "top_left": "┌", "top_right": "┐", "bottom_right": "┘", "bottom_left": "└", "left": "├", "top": "┬", "right": "┤", "bottom": "┴", "center": "┼"},
+    "bold": {"horizontal": "━", "vertical": "┃", "top_left": "┏", "top_right": "┓", "bottom_right": "┛", "bottom_left": "┗", "left": "┣", "top": "┳", "right": "┫", "bottom": "┻", "center": "╋"},
+    "none": {"horizontal": " ", "vertical": " ", "top_left": " ", "top_right": " ", "bottom_right": " ", "bottom_left": " ", "left": " ", "top": " ", "right": " ", "bottom": " ", "center": " "},
+    "dotted-light": {"horizontal": "┄", "vertical": "┊", "top_left": "┌", "top_right": "┐", "bottom_right": "┘", "bottom_left": "└", "left": "├", "top": "┬", "right": "┤", "bottom": "┴", "center": "┼"},
+    "dotted-bold": {"horizontal": "┅", "vertical": "┋", "top_left": "┏", "top_right": "┓", "bottom_right": "┛", "bottom_left": "┗", "left": "┣", "top": "┳", "right": "┫", "bottom": "┻", "center": "╋"},
+    "dot": {"horizontal": ".", "vertical": ".", "top_left": ".", "top_right": ".", "bottom_right": ".", "bottom_left": ".", "left": ".", "top": ".", "right": ".", "bottom": ".", "center": "."},
+    "dot-bold": {"horizontal": "•", "vertical": "•", "top_left": "•", "top_right": "•", "bottom_right": "•", "bottom_left": "•", "left": "•", "top": "•", "right": "•", "bottom": "•", "center": "•"},
+    "zigzag": {"horizontal": "≋", "vertical": "∣", "top_left": "⋚", "top_right": "⋛", "bottom_right": "⋜", "bottom_left": "⋝", "left": "⋜", "top": "∣", "right": "⋛", "bottom": "∣", "center": "∣"},
+    "waves": {"horizontal": "≈", "vertical": "∥", "top_left": "⋜", "top_right": "⋝", "bottom_right": "⋞", "bottom_left": "⋟", "left": "⋜", "top": "∥", "right": "⋝", "bottom": "∥", "center": "∥"},
+    "stars": {"horizontal": "✶", "vertical": "✷", "top_left": "✵", "top_right": "✵", "bottom_right": "✵", "bottom_left": "✵", "left": "✷", "top": "✶", "right": "✷", "bottom": "✶", "center": "✷"},
+    "circles": {"horizontal": "○", "vertical": "○", "top_left": "○", "top_right": "○", "bottom_right": "○", "bottom_left": "○", "left": "○", "top": "○", "right": "○", "bottom": "○", "center": "○"},
+    "hash": {"horizontal": "█", "vertical": "█", "top_left": "█", "top_right": "█", "bottom_right": "█", "bottom_left": "█", "left": "█", "top": "█", "right": "█", "bottom": "█", "center": "█"},
+    "dots-square": {"horizontal": "■", "vertical": "■", "top_left": "■", "top_right": "■", "bottom_right": "■", "bottom_left": "■", "left": "■", "top": "■", "right": "■", "bottom": "■", "center": "■"},
+    "checker": {"horizontal": "▓", "vertical": "▓", "top_left": "▓", "top_right": "▓", "bottom_right": "▓", "bottom_left": "▓", "left": "▓", "top": "▓", "right": "▓", "bottom": "▓", "center": "▓"}
+}
+
+
 def clear() -> None:
     """
     clear the terminal
@@ -170,7 +192,7 @@ def set_bg_color(color: str) -> None:
         os.system('setterm -term linux -back $'+color+' -fore white -clear')
 
 
-def tinput(text: str = '', w: int = 30, extend: bool = False) -> str:
+def tinput(text: str = '', w: int = 30, extend: bool = False, style: str = "double", border_color:str = "", input_color: str = "", promt_color: str = "") -> str:
     """
     ask the user in a boxed input
     """
@@ -178,8 +200,11 @@ def tinput(text: str = '', w: int = 30, extend: bool = False) -> str:
         w = len(text) + 5
     if extend:
         w = len(text) + w
-    value = input( f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{prev_line}║ {text}""")
-    print()
+    
+    horizontal, vertical, top_left, top_right, bottom_right, bottom_left, _, _, _, _, _ = decorations[style].values()
+    
+    value = input(border_color + top_left + horizontal*w + top_right + "\n" + vertical + " " * w + vertical + "\n" + bottom_left + horizontal*w + bottom_right + prev_line + vertical + " " + reset + promt_color + text + reset + input_color)
+    print(reset)
     return value
 
 
@@ -232,12 +257,76 @@ def center(text: str, char: str = ' ') -> str:
     left = (terminal_width // 2) - (lenth // 2)
     
     return " " * left + text
+
+
+
+def table(tab, style='rounded', samesize=False, align="left", height_align='center', table_color="", padding=0, show=True):
+
+    max_length = []
+    max_height = []
+
+    for line_index, line in enumerate(tab):
+        for case_i, case in enumerate(line):
+
+            line[case_i] = "" if case == None else str(case)
+
+            if len(max_height) > line_index:
+                max_height[line_index] = max( [max_height[line_index], line[case_i].count("\n")])
+            else:
+                max_height.append(line[case_i].count("\n"))
+
+            if len(max_length) > case_i:
+                max_length[case_i] = max([max_length[case_i], len(max(line[case_i].split("\n"), key=len))+padding])
+            else:
+                max_length.append( len(max(line[case_i].split("\n"), key=len))+padding)
+
+    if samesize:
+        max_length = [max(max_length) for _ in max_length]
+
+    for line in tab:
+        if len(line) < len(max_length):
+            line.extend([''] * (len(max_length) - len(line)))
+
+    horizontal, vertical, top_left, top_right, bottom_right, bottom_left, left, top, right, bottom, center = decorations[style].values()
+
+    print(table_color+top_left+"".join([(horizontal*colone)+top if i != len(
+        max_length)-1 else horizontal*colone for i, colone in enumerate(max_length)])+top_right)
+
+    for line_i, line in enumerate(tab):
+        for height in range(max_height[line_i]+1):
+            for i, case in enumerate(line):
+
+                text = case
+                if len(text.split('\n')) > height:
+                    text = case.split("\n")[height]
+                else:
+                    text = ""
+
+                margin = int(max_length[i]-len(text))
+
+                print(table_color, end='')
+                if align == 'left':
+                    print(vertical+text+(margin*" "), end='')
+                elif align == "right":
+                    print(vertical+(margin*" ")+text, end='')
+                else:
+                    print(vertical+((margin//2+margin % 2)*" ") +
+                          text+(margin//2*" "), end='')
+
+            print(table_color+vertical)
+
+        if line_i != len(tab)-1:
+            print(table_color+left+"".join([(horizontal*colone)+center if i != len( max_length)-1 else horizontal*colone for i, colone in enumerate(max_length)])+right)
+
+    print(table_color+bottom_left+"".join([(horizontal*colone)+bottom if i != len(max_length)-1 else horizontal*colone for i, colone in enumerate(max_length)])+bottom_right)
+
     
 
 
 if __name__ == "__main__":
     clear()
     cprint(center(red + underline + bold + "Hello !"))
+    
     cprint(bold, f"\nWelcome in the color library! ({get_rgb_print(0,0,255) + underline}https://github.com/AZachia/color{reset})")
     cprint(f"Here, you can add more fun and color in your terminal {get_rgb_print(*[50]*3, True)} >_ {reset} !\n")
     
@@ -268,8 +357,11 @@ if __name__ == "__main__":
         print()
         
     cprint(bold, "\n • Get nice user inputs:")
-    you = tinput("What do you think about it ? ", 30, True)
+    you = tinput("What do you think about it ? ", 30, True, "rounded", bold, green)
     cprint(f"you said: {green}{you}")
     
     cprint(bold, "\n • Get the terminal size:")
-    cprint(f"your terminal size is {red}{terminal_size()[0]}{reset}:{red}{terminal_size()[1]} ")
+    cprint( f"your terminal size is {red}{terminal_size()[0]}{reset}:{red}{terminal_size()[1]}")
+    
+    cprint(bold, "\n • Display tables:")
+    table([["You can also", "Print tables"], ["in a few steps", "and with a nice result"]], samesize=True, align="center", padding=2)
