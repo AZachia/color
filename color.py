@@ -170,14 +170,15 @@ def set_bg_color(color: str) -> None:
         os.system('setterm -term linux -back $'+color+' -fore white -clear')
 
 
-def tinput(text: str = '', w: int = 30) -> str:
+def tinput(text: str = '', w: int = 30, extend: bool = False) -> str:
     """
     ask the user in a boxed input
     """
-    if len(text) > w:
-        w = len(text)+5
-    value = input(
-        f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{cursor_lineup}║ {text}""")
+    if len(text) > w and not extend:
+        w = len(text) + 5
+    if extend:
+        w = len(text) + w
+    value = input( f"""╔{"═"*w}╗\n║{" "*w}║\n╚{"═"*w}╝{prev_line}║ {text}""")
     print()
     return value
 
