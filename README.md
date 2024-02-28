@@ -81,6 +81,12 @@ result:
 ╰────────────────────────┴────────────────────────╯
 ```
 
+ - get nice user inputs:
+ ```python
+ name = color.tinput("What is your name ? ", 30, True, "rounded", bold, green)
+ print(name)
+ ```
+
 
 Written by [Galky](https://github.com/Gvlky) & [me](https://github.com/AZachia)
 
