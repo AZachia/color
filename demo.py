@@ -10,3 +10,6 @@ clrless = cprint(color.red, color.underline, "Hello ", color.green, "World !")
 print("No wierd spaces, and no need to manually reset color")
 print("\nAnd you can also extract a colorless version of the printed text:")
 print(clrless)
+
+for style in color.decorations:
+    color.table([[style]], style=style)
