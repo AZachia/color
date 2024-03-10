@@ -184,6 +184,8 @@ result:
 ▓▓▓▓▓▓▓▓▓
 ```
 
+Used in [Termial Video player](https://github.com/AZachia/Terminal-Video-player)
+
 
 Written by [Galky](https://github.com/Gvlky) & [me](https://github.com/AZachia)
 
