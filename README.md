@@ -189,8 +189,4 @@ Used in [Termial Video player](https://github.com/AZachia/Terminal-Video-player)
 
 Written by [Galky](https://github.com/Gvlky) & [me](https://github.com/AZachia)
 
-<a href="https://github.com/simple-icons/simple-icons/graphs/contributors">
-  <img src="https://opencollective.com/simple-icons/contributors.svg?width=890&button=false" />
-</a>
-
 <img src="https://github.com/gvlky.png" width="60px;" style="border-radius:100px"/><img src="https://github.com/AZachia.png" width="60px;" style="border-radius:100px"/>
