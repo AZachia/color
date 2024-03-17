@@ -250,6 +250,39 @@ def hexprint(hex, *args, background=False, **kwargs) -> None:
     rgbprint(*hex_to_rgb(hex), *args, background=background, **kwargs)
     
 
+class color:
+    def __init__(self, color: str | tuple | list):
+        self.color = color
+        self.color_type = self.detect_color_type()
+
+    def detect_color_type(self):
+        if type(self.color) == str:
+            return "hex"
+        elif type(self.color) in (tuple, list):
+            return "rgb"
+
+    def rgb(self):
+        if self.detect_color_type() == "hex":
+            return hex_to_rgb(self.color)
+        return self.color
+    
+    def hex(self):
+        if self.detect_color_type() == "rgb":
+            return rgb_to_hex(*self.color)
+        return self.color
+    
+    def type(self):
+        return self.detect_color_type()
+    
+    def is_same(self, color: str | tuple | list):
+        other_color = color(color)
+        if self.color_type == other_color.type():
+            if self.color_type == "hex":
+                return self.hex() == other_color.hex()
+        else:
+            return self.rgb() == other_color.rgb()
+
+
 def center(text: str, char: str = ' ') -> str:
     lenth = len(colorless(text))
     terminal_width = terminal_size()[0]
